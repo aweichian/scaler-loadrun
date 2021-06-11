@@ -1,0 +1,1 @@
+./loadrun -url http://localhost:8080/v1/task\?type\=cpu\&number\=10000000 -pool 1000
