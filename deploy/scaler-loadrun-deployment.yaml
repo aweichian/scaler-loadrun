@@ -1,0 +1,135 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "7"
+  labels:
+    k8s-app: devops-scaler-loadrun
+    k8s-project: devops
+  name: devops-scaler-loadrun
+  namespace: sit
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: devops-scaler-loadrun
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        build: "1602309615"
+        k8s-app: devops-scaler-loadrun
+    spec:
+      containers:
+      - env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: sit
+        - name: envID
+          value: sit
+        - name: ENV_ORIGIN
+          value: sit
+        - name: DEPLOY_TIME
+          value: 2020-10-10 14:00:14
+        - name: LOG_DIR
+          value: /service/logs/app/sit/devops/scaler-loadrun
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: NODE_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.hostIP
+        - name: TZ
+          value: Asia/Shanghai
+        - name: PROJNAME
+          value: devops
+        - name: APPNAME
+          value: scaler-loadrun
+        - name: PINPOINT_ENABLED
+        - name: PINPOINT_IP
+        - name: PROFILER_SAMPLING_RATE
+          value: "10"
+        image: ic-harbor.baozun.com/sit/devops_scaler-loadrun:495f205
+        imagePullPolicy: Always
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - sudo rm -rvf  /service/logs/app/sit/devops/scaler-loadrun  /service/logs/app/production/devops/scaler-loadrun  &&
+                sudo mkdir -pv  /service/mount/app/sit/devops/scaler-loadrun/$POD_IP  /service/logs/app/sit/devops  &&
+                sudo chown -R vmuser.vmuser  /service/mount/app/sit/devops/scaler-loadrun/$POD_IP
+                && sudo ln -s /service/mount/app/sit/devops/scaler-loadrun/$POD_IP  /service/logs/app/sit/devops/scaler-loadrun
+          preStop:
+            exec:
+              command:
+              - pkill
+              - "-15"
+              - java
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /v1/health
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 30
+        name: devops-scaler-loadrun
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /v1/health
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 30
+        resources:
+          limits:
+            cpu: "4"
+            memory: 4Gi
+          requests:
+            cpu: 200m
+            memory: 1Gi
+        securityContext:
+          privileged: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /service/mount/app/sit/devops/scaler-loadrun
+          name: log
+        - mountPath: /etc/localtime
+          name: host-time
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        sit: "true"
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 700
+        runAsUser: 700
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - hostPath:
+          path: /service/logs/app/sit/devops/scaler-loadrun
+          type: ""
+        name: log
+      - hostPath:
+          path: /etc/localtime
+          type: ""
+        name: host-time
