@@ -116,8 +116,6 @@ spec:
           name: host-time
           readOnly: true
       dnsPolicy: ClusterFirst
-      nodeSelector:
-        sit: "true"
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext:
