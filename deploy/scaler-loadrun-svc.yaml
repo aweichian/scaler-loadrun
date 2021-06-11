@@ -3,7 +3,7 @@ kind: Service
 metadata:
   annotations:
   name: devops-scaler-loadrun
-  namespace: sit
+  namespace: default
 spec:
   clusterIP: None
   ports:
