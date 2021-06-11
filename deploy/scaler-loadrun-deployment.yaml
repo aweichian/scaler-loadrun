@@ -100,11 +100,11 @@ spec:
           timeoutSeconds: 30
         resources:
           limits:
-            cpu: "4"
-            memory: 4Gi
-          requests:
             cpu: 200m
-            memory: 1Gi
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
         securityContext:
           privileged: true
         terminationMessagePath: /dev/termination-log
