@@ -1,4 +1,4 @@
-FROM ic-harbor.baozun.com/ic/normal-base:v0.1
+FROM alpine:3.4
 
 USER vmuser
 
