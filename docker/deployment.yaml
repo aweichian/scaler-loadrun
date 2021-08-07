@@ -1,0 +1,58 @@
+{
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "app": "scaler-loadrun",
+        },
+        "name": "scaler-loadrun",
+    },
+    "spec": {
+        "replicas": 1,
+        "strategy": {
+            "rollingUpdate": {
+                "maxSurge": "25%",
+                "maxUnavailable": "25%"
+            },
+            "type": "RollingUpdate"
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+  				"app": "scaler-loadrun",
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "registry.cn-shanghai.aliyuncs.com/aweichian/scaler-loadrun:v2",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "scaler-loadrun",
+                        "resources": {
+                            "limits": {
+                                "cpu": "500m",
+                                "memory": "500Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "100Mi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File"
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "imagePullSecrets": [
+                    {
+                        "name": "qn-registry-secret"
+                    }
+                ],
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "terminationGracePeriodSeconds": 30
+            }
+        }
+    }
+}
