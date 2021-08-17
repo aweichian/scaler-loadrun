@@ -2,18 +2,18 @@ pipeline {
     agent {node 'slave-node06'}
 
     environment {
-        USER_EMAIL = "renwei.qian@baozun.com"  //发送邮件的地址（一般为项目owner，按实际修改）
+        USER_EMAIL = "renwei.qian@xx.com"  //发送邮件的地址（一般为项目owner，按实际修改）
         USER = "renwei.qian"  //发送邮件的邮箱前缀（一般为项目owner，按实际修改）
         SFTP_SECRET_ACCESS_KEY = credentials('jenkins-sftp-secret-access-key')  //SFTP的秘钥（发包使用，无需修改）
-        SFTP_SERVER = "10.101.6.87"  //SFTP的地址（发包使用，无需修改）
-        VALIDATE_URL = "http://bee-backend.baozun.com/ci_validate/"  //SFTP的地址（发包使用，无需修改）
+        SFTP_SERVER = "100.100.6.87"  //SFTP的地址（发包使用，无需修改）
+        VALIDATE_URL = "http://x.xx.com/ci_validate/"  //SFTP的地址（发包使用，无需修改）
         REMOTE_DIR = "/upload"  //SFTP的目录（发包使用，无需修改）
-        LOCAL_DIR= "$WORKSPACE/ecs-ofa-service-impl/target"  //生成包的位置，其中$WORKSPACE不需要修改，ecs-ofa-service-impl/target按照实际的应用目录填写
+        LOCAL_DIR= "$WORKSPACE/xxa/target"  //生成包的位置，其中$WORKSPACE不需要修改，ecs-ofa-service-impl/target按照实际的应用目录填写
         PACKAGE_NAME = "scaler-loadrun"  //需要发布的包名，按实际修改，dubbo包名写.tar.gz包，tomcat包名写war包，springboot包名写jar包
         PROJECT_NAME = "devops" //项目名，按实际修改
-        APP_NAME = "scaler-loadrun"  //应用名，按实际修改，如有多个，在括号内添加，以空格间隔(例如"ofa-service-a ofa-service-b ofa-service-c")
+        APP_NAME = "scaler-loadrun"  //应用名，按实际修改，如有多个，在括号内添加，以空格间隔(例如"service-a service-b service-c")
         ENV_NAME = "sit"  //发布的环境，根据自己有几个环境进行删减，但是环境名就sit uat sandbox prod这四个
-        HARBOR_ADDR = "ic-harbor.baozun.com"  //Harbor地址，无需修改
+        HARBOR_ADDR = "xx.x.com"  //Harbor地址，无需修改
         DOCKER_NAME = "docker/Dockerfile"  //Dockerfile文件位置，按实际修改
 		COVERAGE = "50"  //单元测试覆盖率，标准为50,新接入应用可适当降低
     }
