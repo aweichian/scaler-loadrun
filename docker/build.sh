@@ -8,6 +8,6 @@ cp ../main .
 
 docker build -t scaler-loadrun:$tag .
 
-# docker tag scaler-loadrun:$tag ic-harbor.baozun.com/ic/scaler-loadrun:$tag
-# docker push ic-harbor.baozun.com/ic/scaler-loadrun:$tag
+# docker tag scaler-loadrun:$tag xx.com/ic/scaler-loadrun:$tag
+# docker push xx.com/ic/scaler-loadrun:$tag
 
