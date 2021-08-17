@@ -59,7 +59,7 @@ spec:
         - name: PINPOINT_IP
         - name: PROFILER_SAMPLING_RATE
           value: "10"
-        image: ic-harbor.baozun.com/sit/devops_scaler-loadrun:495f205
+        image: x.com/sit/devops_scaler-loadrun:xxxxxx
         imagePullPolicy: Always
         lifecycle:
           postStart:
